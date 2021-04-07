@@ -35,7 +35,9 @@ export class EditorWrapper {
 		completionController: GitHubCompletionController,
 		api: GithubApi,
 		settings: MonacoOptions,
+		type: String,
 	) {
+		console.log(textArea)
 		if (textArea.hedietEditorWrapper) {
 			return textArea.hedietEditorWrapper;
 		}
@@ -46,12 +48,13 @@ export class EditorWrapper {
 			getGithubTheme(),
 			api,
 			settings,
+			type
 		);
 	}
 
 	private disposed = false;
 	private readonly disposables = new Array<() => any>();
-
+	private readonly type = '';
 	private readonly editorWrapperDiv = document.createElement("div");
 	private readonly monacoDiv = document.createElement("div");
 	private readonly previewDiv = document.createElement("div");
@@ -59,8 +62,8 @@ export class EditorWrapper {
 	private readonly editor: editor.IStandaloneCodeEditor;
 
 	private fullscreen = false;
+	private intFrameHeight: number = window.innerHeight
 	private editorHeight: number = 200;
-
 	private constructor(
 		private readonly textArea: HTMLTextAreaElement,
 		monaco: Monaco,
@@ -68,7 +71,11 @@ export class EditorWrapper {
 		theme: "light" | "dark",
 		private readonly githubApi: GithubApi,
 		settings: MonacoOptions,
+		type: String
 	) {
+		if (type === 'editor') {
+			this.editorHeight = this.intFrameHeight - 1; 
+		}
 		this.editorRoot = textArea.parentNode as HTMLElement;
 
 		this.prepareTextArea();

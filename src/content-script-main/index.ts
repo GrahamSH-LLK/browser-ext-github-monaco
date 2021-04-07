@@ -38,9 +38,25 @@ async function main() {
 				monaco,
 				completionController,
 				githubApi,
-				settings
+				settings,
+				''
 			);
 		}
+		for (const textArea of [
+			...(document.getElementsByClassName(
+				"file-editor-textarea"
+			) as any),
+		]) {
+			EditorWrapper.wrap(
+				textArea,
+				monaco,
+				completionController,
+				githubApi,
+				settings,
+				'editor'
+			);
+		}
+
 
 		// Github seems to copy dom nodes around.
 		// Github also copies the monaco editor which leads to problems.
